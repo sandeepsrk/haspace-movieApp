@@ -1,0 +1,131 @@
+tags:
+- name: movies
+  description: movies API
+
+paths:
+# [GET] movies
+  /movies:
+    get:
+      tags:
+      - movies
+      summary: Find All Movies
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] movies
+    post:
+      tags:
+      - movies
+      summary: Add Movie
+      parameters:
+      - name: body
+        in: body
+        description: movie Data
+        required: true
+        schema:
+          $ref: '#/definitions/movies'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] movies/id
+  /movies/{id}:
+    get:
+      tags:
+      - movies
+      summary: Find Movie By Id
+      parameters:
+      - name: id
+        in: path
+        description: Movie Id
+        required: true
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] movies/id
+    put:
+      tags:
+      - movies
+      summary: Update Movie By Id
+      parameters:
+      - name: id
+        in: path
+        description: movie Id
+        required: true
+      - name: body
+        in: body
+        description: movie Data
+        required: true
+        schema:
+          $ref: '#/definitions/movies'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] movies/id
+    delete:
+      tags:
+      - movies
+      summary: Delete Movie By Id
+      parameters:
+      - name: id
+        in: path
+        description: movie Id
+        required: true
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# definitions
+definitions:
+  movies:
+    type: object
+    required:
+        - title
+        - description
+        - duration
+        - genre
+        - image
+    properties:
+      title:
+        type: string
+        description: movie Title
+      description:
+        type: string
+        description: movie Description
+      duration:
+        type: number
+        description: movie Duration
+      genre:
+        type: string
+        description: movie Genre
+      image:
+        type: string
+        description: movie Poster
+schemes:
+ - https
+ - http
