@@ -6,26 +6,27 @@ import validationMiddleware from '@middlewares/validation.middleware';
 import multer from 'multer';
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-      cb(null, './uploads/')
+  destination: (req, file, cb) => {
+      cb(null, './public/');
   },
-  
-  filename: function (req: any, file: any, cb: any) {
-      cb(null, file.originalname)
+  filename: (req, file, cb) => {
+      const fileName = file.originalname.toLowerCase().split(' ').join('-');
+      cb(null, '-' + fileName)
   }
 });
-const fileFilter = (req: any,file: any,cb: any) => {
-  if(file.mimetype === "image/jpg"  || 
-     file.mimetype ==="image/jpeg"  || 
-     file.mimetype ===  "image/png"){
-   
-  cb(null, true);
- }else{
-    cb(new Error("Image uploaded is not of type jpg/jpeg or png"),false);
-}
-}
-const upload = multer({storage: storage, fileFilter : fileFilter});
 
+var upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+      if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+          cb(null, true);
+      } else {
+          cb(null, false);
+          return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      }
+  }
+});
+console.log("UploadKKKKKKKKKK",storage)
 class MoviesRoute implements Routes {
   public path = '/movies';
   public router = Router();
@@ -38,7 +39,7 @@ class MoviesRoute implements Routes {
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.moviesController.getMovies);
     this.router.get(`${this.path}/:id`, this.moviesController.getMovieById);
-    this.router.post(`${this.path}`, validationMiddleware(CreateMovieDto, 'body'),upload.array('images',5),this.moviesController.createMovie);
+    this.router.post(`${this.path}`, upload.single('file'),this.moviesController.createMovie);
     this.router.put(`${this.path}/:id`, validationMiddleware(CreateMovieDto, 'body', true), this.moviesController.updateMovie);
     this.router.delete(`${this.path}/:id`, this.moviesController.deleteMovie);
   }

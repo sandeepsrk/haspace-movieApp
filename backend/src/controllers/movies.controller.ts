@@ -31,12 +31,14 @@ class MoviesController {
 
   public createMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const url = req.protocol + '://' + req.get('host')
+      console.log("YYYYYYYYYYYYYYYYYYY",req.body)
       const movieData: CreateMovieDto = {
         title: req.body.title,
         description: req.body.description,
-        duration: req.body.duration,
+        duration: parseInt(req.body.duration),
         genre: req.body.genre,
-        image: req.files
+        image: url + '/public/' + req.file.filename
 
       };
       const createMovieData: Movie = await this.movieService.createMovie(movieData);

@@ -14,6 +14,6 @@ export class CreateMovieDto {
   public genre: number;
 
   //@IsString()
-  public image: object;
+  public image: any;
   
 }

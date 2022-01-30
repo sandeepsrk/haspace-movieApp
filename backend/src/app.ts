@@ -22,7 +22,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.port = process.env.PORT || 3000;
+    this.port = process.env.PORT || 3001;
     this.env = process.env.NODE_ENV || 'development';
 
     this.connectToDatabase();
@@ -60,8 +60,10 @@ class App {
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cookieParser());
+    this.app.use('/public', express.static('public'));
+
   }
 
   private initializeRoutes(routes: Routes[]) {
