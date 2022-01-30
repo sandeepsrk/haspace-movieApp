@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const initialFValues: Movie = {
     title: '',
     description: '',
-    duration: 0,
+    duration: 0 ,
     genre:'',
     image: []
 }
@@ -75,8 +75,7 @@ const formStatusProps: FormIStatusProps  = {
     },
 }
 
-export default function AddNewMovie(props: any) {
-    console.log("Props LLLLLLl",props.props)
+export default function AddNewMovie() {
    
     const classes = useStyles({})
     const [displayFormStatus, setDisplayFormStatus] = useState(false)
@@ -85,9 +84,7 @@ export default function AddNewMovie(props: any) {
         message: '',
         type: '',
     })
-    if(props) {
-        //setOpen(true)
-    }
+
     const { reload, setReload } = useReload();
     const [image,setImage] = useState([])
     const createNewUser = async (data: Movie, resetForm: Function) => {
@@ -140,16 +137,13 @@ export default function AddNewMovie(props: any) {
 
   return (
     <div>
-        {   props.props !== undefined &&
             <Button variant="contained" color="secondary" onClick={handleClickOpen} style={{alignItems:'right'}}>
             Add New Movie
           </Button>
-        }
-      
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>
         <Formik
-                initialValues={props ? props.props : initialFValues}
+                initialValues={initialFValues}
                 onSubmit={(values: Movie, actions) => {
                     createNewUser(values, actions.resetForm)
                      actions.setSubmitting(false)

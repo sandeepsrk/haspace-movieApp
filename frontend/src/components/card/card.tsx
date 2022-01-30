@@ -12,7 +12,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import MoviesDataService from '../../services/movie.service';
 import { useReload, Reload } from '../../context/movieContext';
-import AddNewMovie from '../modal/modal';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,6 +35,8 @@ export default function AltCard() {
     const [edit,setEdit] = React.useState(false)
     const [editItem, setEditItem] = React.useState([])
     const { reload, setReload } = useReload();
+    const [show, setShow] = React.useState(false);
+
     React.useEffect(() => {
        MoviesDataService.getAll().then((res:any)=>{
            var movies = res.data.data
@@ -44,7 +45,6 @@ export default function AltCard() {
     },[reload == "true"])
 
     const handleEdit = (elem: any) => {
-        console.log("The value ____________",elem)
        setEdit(true)
        setEditItem(elem);
     }
@@ -59,18 +59,9 @@ export default function AltCard() {
             >
                 {items.map((elem : any,i:any) => (
                     <Grid item xs={12} sm={6} md={3} key={i}>
-                        {/* <Card>
-                            <CardHeader
-                                title={`quarter : ${elem.quarter}`}
-                                subheader={`earnings : ${elem.earnings}`}
-                            />
-                            <CardContent>
-                                <Typography variant="h5" gutterBottom>
-                                    Hello World
-                                </Typography>
-                            </CardContent>
-                        </Card> */}
-                         <Card className={classes.root}>
+                         <Card className={classes.root}
+                         onMouseOver={() => setShow(true)}
+                         onMouseOut={() => setShow(false)}>
                             <CardActionArea>
                                 <CardMedia
                                 component="img"
@@ -103,14 +94,11 @@ export default function AltCard() {
                                 </Button>
                             </CardActions>
                          </Card>
-                         {
-                            edit &&
-                            <AddNewMovie props= {editItem}/>
-                        }
+                        
                      </Grid>
                 ))}
             </Grid>
-          
+            
         </div>
     )
 }
