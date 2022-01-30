@@ -41,8 +41,7 @@ class MovieService {
       if (findMovie && findMovie._id != movieId) throw new HttpException(409, `Movie with title ${movieData.title} does not exists`);
     }
 
-
-    const updateMovieById: Movie = await this.movies.findByIdAndUpdate(movieId, { movieData });
+    const updateMovieById: Movie = await this.movies.findByIdAndUpdate(movieId, { ...movieData });
     if (!updateMovieById) throw new HttpException(409, "No movie found");
 
     return updateMovieById;

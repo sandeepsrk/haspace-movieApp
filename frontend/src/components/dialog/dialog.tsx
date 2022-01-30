@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: '-25px'
     },
     submitButton: {
-        marginTop: '24px',
+        marginTop: '24px'
     },
     buttonStyle: {
         marginLeft:'25px',
@@ -56,30 +56,24 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const initialFValues: Movie = {
-    title: '',
-    description: '',
-    duration: 0 ,
-    genre:'',
-    image: []
-}
+
 
 const formStatusProps: FormIStatusProps  = {
     success: {
-        message: 'Created successfully.',
+        message: 'Updated successfully.',
         type: 'success',
     },
     error: {
         message: 'Something went wrong. Please try again.',
         type: 'error',
-    }
+    },
 }
 
-export default function AddNewMovie() {
-   
+export default function Update(props: any) {
+    const initialFValues: any = props.value
+    console.log("Props $$$$$$$$$$$$$$$$$$", props)
     const classes = useStyles({})
     const [displayFormStatus, setDisplayFormStatus] = useState(false)
-    const [open, setOpen] = React.useState(false);
     const [formStatus, setFormStatus] = useState<FormIStatus>({
         message: '',
         type: '',
@@ -87,27 +81,30 @@ export default function AddNewMovie() {
 
     const { reload, setReload } = useReload();
     const [image,setImage] = useState([])
-    React.useEffect(() => {
-        setDisplayFormStatus(false);
-    })
+
     const createNewUser = async (data: Movie, resetForm: Function) => {
-        let form: any = new FormData();
+        console.log("Values are @@@@", data)
+        let formUpdate: any = new FormData();  
         data.duration = parseInt(data.duration.toString());
        //form.append("data",data)
-       form.append("file",image)
-       form.append("title",data.title)
-       form.append("description",data.description)
-       form.append("duration",data.duration)
-       form.append("genre",data.genre)
+       formUpdate.append("file",image)
+       formUpdate.append("title",data.title)
+       formUpdate.append("description",data.description)
+       formUpdate.append("duration",data.duration)
+       formUpdate.append("genre",data.genre)
+
+       console.log("image $$%%%%",props.value._id)
+       console.log("form data ", formUpdate)
         try {
             if (data) {
                
-                MoviesDataService.create(form)
+                MoviesDataService.update(props.value._id, formUpdate)
                 .then((response: any) => {
+                    console.log("Response $$$", response)
                     setFormStatus(formStatusProps.success)
                     resetForm({})
-                    setOpen(false)
                     setReload(Reload.load)
+                    props.onChange()
                 })
             } else {
                 setFormStatus(formStatusProps.error)
@@ -121,17 +118,9 @@ export default function AddNewMovie() {
         }
     }
 
-
-  
-
-  const handleClickOpen = () => {
-    setOpen(true);
-    setReload(Reload.reload)
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+    const handleClose = () => {
+        props.onChange()
+    };
 
   const handleImage = (e : any) => {
       setImage(e.target.files[0])  
@@ -140,14 +129,10 @@ export default function AddNewMovie() {
 
   return (
     <div>
-            <Button variant="contained" color="secondary" onClick={handleClickOpen} style={{alignItems:'right'}}>
-                Add New Movie
-            </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogContent>
+
         <Formik
                 initialValues={initialFValues}
-                onSubmit={(values: Movie, actions) => {
+                onSubmit={(values: any, actions) => {
                     createNewUser(values, actions.resetForm)
                      actions.setSubmitting(false)
                 }}
@@ -197,6 +182,7 @@ export default function AddNewMovie() {
                                           label="Title" 
                                           variant="outlined" 
                                           name='title'
+                                          disabled
                                           value={values.title}
                                           className={clsx(classes.margin, classes.textField)}
                                           helperText={
@@ -302,10 +288,10 @@ export default function AddNewMovie() {
                                 </Grid>
                                 <Grid
                                     item
-                                    lg={10}
-                                    md={10}
-                                    sm={10}
-                                    xs={10}
+                                    lg={6}
+                                    md={6}
+                                    sm={6}
+                                    xs={6}
                                     className={classes.submitButton}
                                 >
                                     <Button
@@ -317,22 +303,12 @@ export default function AddNewMovie() {
                                     >
                                         Submit
                                     </Button>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <Button 
-                                        onClick={handleClose} 
-                                        color="primary" 
-                                        variant="contained"
-                                     >
-                                        Cancel
-                                    </Button>
                                 </Grid>
                             </Form>
                           </div>
                     )
                 }}
             </Formik>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

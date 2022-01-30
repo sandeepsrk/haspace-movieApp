@@ -15,7 +15,7 @@ class MoviesDataService {
     return http.post<any>("/", file);
   }
 
-  update(data: Movie, id: any) {
+  update(id: any, data: any) {
     return http.put<any>(`/${id}`, data);
   }
 

@@ -40,7 +40,7 @@ class MoviesRoute implements Routes {
     this.router.get(`${this.path}`, this.moviesController.getMovies);
     this.router.get(`${this.path}/:id`, this.moviesController.getMovieById);
     this.router.post(`${this.path}`, upload.single('file'),this.moviesController.createMovie);
-    this.router.put(`${this.path}/:id`, validationMiddleware(CreateMovieDto, 'body', true), this.moviesController.updateMovie);
+    this.router.put(`${this.path}/:id`,  upload.single('file'),this.moviesController.updateMovie);
     this.router.delete(`${this.path}/:id`, this.moviesController.deleteMovie);
   }
 }

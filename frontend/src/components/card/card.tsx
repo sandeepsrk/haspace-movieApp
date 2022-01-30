@@ -12,6 +12,19 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import MoviesDataService from '../../services/movie.service';
 import { useReload, Reload } from '../../context/movieContext';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Update from '../dialog/dialog';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,22 +45,40 @@ export default function AltCard() {
 
     const classes = useStyles()
     const [items,setItems] = React.useState([])
-    const [edit,setEdit] = React.useState(false)
-    const [editItem, setEditItem] = React.useState([])
+    const [edit, setEdit] = React.useState(false)
+    const [editItem, setEditItem] = React.useState()
     const { reload, setReload } = useReload();
     const [show, setShow] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
 
     React.useEffect(() => {
        MoviesDataService.getAll().then((res:any)=>{
            var movies = res.data.data
            setItems(movies)
        })
+       setReload(Reload.reload)
     },[reload == "true"])
 
     const handleEdit = (elem: any) => {
-       setEdit(true)
+       setEdit(true);
        setEditItem(elem);
+       setOpen(true)
+
     }
+
+    const handleDelete = (elem: any) => {
+        MoviesDataService.delete(elem._id)
+        .then((response: any) => {
+            alert("Deleted !!")
+            setReload(Reload.load)
+        }) 
+    }
+    const handleClose = () => {
+        setOpen(false);
+      };
+
+    console.log(" Edit Item ####", editItem);
+
     return (
         <div className={classes.root}>
             <Grid
@@ -89,7 +120,7 @@ export default function AltCard() {
                                 <Button size="small" color="primary" onClick={() => handleEdit(elem)}>
                                 Edit
                                 </Button>
-                                <Button size="small" color="primary">
+                                <Button size="small" color="primary" onClick={() => handleDelete(elem)}>
                                  Delete
                                 </Button>
                             </CardActions>
@@ -97,8 +128,34 @@ export default function AltCard() {
                         
                      </Grid>
                 ))}
+
+
+                { edit &&
+                    <div>
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="responsive-dialog-title"
+                        >
+                            <Toolbar style={{alignItems:'right'}}>
+                            <IconButton edge="end" color="inherit" onClick={handleClose} aria-label="close">
+                            <CloseIcon />
+                            </IconButton>
+                            </Toolbar>
+                            <Update value={editItem} />
+                        </Dialog>
+                    </div> 
+                }
             </Grid>
             
+
+
+
         </div>
     )
 }
+
+
+
+
+
