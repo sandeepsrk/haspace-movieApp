@@ -27,7 +27,7 @@ Application features
 
 ## To run this project,
 
-1. Using docker and docker-compose (requires latest versions)
+### 1. Using docker and docker-compose (requires latest versions)
 ### Steps
 
 1. Clone this repository
@@ -38,5 +38,21 @@ Application features
 Open a browser tab, go to http://localhost:3000
 
 To access swagger api documentation , http://localhost:3001/api-docs
+
+### 1. In the local mmachine,
+
+1. Open the development.json file in haspace-movieApp/backend/src/configs and update the mongodb configurations
+2. cd haspace-movieApp/backend/
+3. npm install && npm start
+4. To run the react app,
+
+ cd haspace-movieApp/frontend/
+ npm install && npm start
+ 
+ Postman collection
+ 
+  haspace-movieApp/backend/Movie App.postman_collection.json
+
+
 
 
