@@ -10,7 +10,7 @@ Application features
 
 1. List all the movies added
 
- file:///home/sandeep/Pictures/Screenshot%20from%202022-02-14%2001-57-43.png
+![Screenshot from 2022-02-14 01-57-43](https://user-images.githubusercontent.com/49935554/153774630-ba68a06e-090b-48d0-b1c5-05bc2dfe42ae.png)
  
  2. Details of a movie
  
@@ -18,11 +18,12 @@ Application features
 
  3. Add a movie
 
- file:///home/sandeep/Pictures/Screenshot%20from%202022-02-14%2001-58-11.png
+![Screenshot from 2022-02-14 01-58-11](https://user-images.githubusercontent.com/49935554/153774642-71ade03f-5ea7-4919-be8d-a6e790b91e67.png)
 
  4. Edit/Delete existing movie
- 5. 
- file:///home/sandeep/Pictures/Screenshot%20from%202022-02-14%2001-58-20.png
+ 
+ ![Screenshot from 2022-02-14 01-58-20](https://user-images.githubusercontent.com/49935554/153774655-322c8e29-6a2e-4c57-ac01-24bacf5ae6e6.png)
+
 
 ## To run this project,
 
