@@ -1,0 +1,16 @@
+.movie-description {
+  display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+
+}
+.movie-card-image {
+height: 140;
+  }
+
+.movie-card {
+  height: 450px;
+}

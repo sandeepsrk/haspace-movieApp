@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "ab4455ea-3356-4169-bbaf-62343d3b98b4",
+		"name": "Movie App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add a new movie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": " Spider-Man: No Way Home",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "With Spider-Man's identity now revealed, our friendly neighborhood web-slinger is unmasked and no longer able to separate his normal life as Peter Parker from the high stakes of being a superhero. When Peter asks for help from Doctor Strange, the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
+							"type": "text"
+						},
+						{
+							"key": "duration",
+							"value": "148",
+							"type": "text"
+						},
+						{
+							"key": "genre",
+							"value": "Fantasy",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/sandeep/Downloads/spiderman.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3001/movies",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a movie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": " Spider-Man: No Way Home",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "With Spider-Man's identity now revealed, our friendly neighborhood web-slinger is unmasked and no longer able to separate his normal life as Peter Parker from the high stakes of being a superhero. When Peter asks for help from Doctor Strange, the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
+							"type": "text"
+						},
+						{
+							"key": "duration",
+							"value": "148",
+							"type": "text"
+						},
+						{
+							"key": "genre",
+							"value": "Fantasy",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/sandeep/Downloads/spiderman.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3001/movies",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all movies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/movies",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get movie by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3001/movies?id=6208a24a1bb20000300028c6",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"movies"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "6208a24a1bb20000300028c6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a movie",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,28 @@
+# baseURL
+@baseURL = http://localhost:3000
+
+###
+# Find All Movies
+GET {{ baseURL }}/movies
+
+###
+# Find Movie By Id
+GET {{ baseURL }}/movies/1
+
+###
+# Create UserMovie
+POST {{ baseURL }}/movies
+Content-Type: application/json
+
+
+
+###
+# Modify Movie By Id
+PUT {{ baseURL }}/users/1
+Content-Type: application/json
+
+
+
+###
+# Delete Movie By Id
+DELETE {{ baseURL }}/movies/1

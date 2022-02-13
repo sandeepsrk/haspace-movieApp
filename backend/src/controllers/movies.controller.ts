@@ -32,7 +32,6 @@ class MoviesController {
   public createMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const url = req.protocol + '://' + req.get('host')
-      console.log("YYYYYYYYYYYYYYYYYYY",req.body)
       const movieData: CreateMovieDto = {
         title: req.body.title,
         description: req.body.description,
@@ -51,16 +50,16 @@ class MoviesController {
   public updateMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const movieId: string = req.params.id;
-      console.log("Movie Id", movieId);
       const url = req.protocol + '://' + req.get('host')
-      console.log("YYYYYYYYYYYYYYYYYYY",req.body)
-
+      let newImage : string = req.body.file === '' ? req.body.image : url + '/public/' + req.file.filename
+    
       const movieData: CreateMovieDto = {
         title: req.body.title,
         description: req.body.description,
         duration: parseInt(req.body.duration),
         genre: req.body.genre,
-        image: url + '/public/' + req.file.filename
+        image: newImage
+       
       };      
       const updateMovieData: Movie = await this.movieService.updateMovie(movieId, movieData);
 

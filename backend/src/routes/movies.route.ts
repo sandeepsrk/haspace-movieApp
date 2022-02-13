@@ -26,7 +26,6 @@ var upload = multer({
       }
   }
 });
-console.log("UploadKKKKKKKKKK",storage)
 class MoviesRoute implements Routes {
   public path = '/movies';
   public router = Router();

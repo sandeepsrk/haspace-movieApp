@@ -1,0 +1,7 @@
+
+.form-error { color: 'green' }
+.form-success { color: 'red' }
+.center {
+    justify-content: 'center';
+    align-items: 'center';
+}

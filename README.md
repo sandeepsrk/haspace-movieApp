@@ -1,6 +1,10 @@
 # haspace-movieApp
 A sample movie listing app created with ReactJS, ExpressJS and MongoDB in typescript
 
+Required Dependencies
+1. NodeJS - v 14.14
+2. Docker - v 20.10
+3. Docker-compose  v1.29.2
 ## To run this project,
 
 ### Steps

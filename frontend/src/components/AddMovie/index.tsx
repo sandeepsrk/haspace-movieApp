@@ -1,4 +1,13 @@
-import React,{ useState } from 'react';
+
+import './styles.css';
+import React,{useState} from 'react';
+import { Formik, Form,Field ,FormikProps } from 'formik';
+import {Movie, FormIStatus, FormIStatusProps} from '../../types/movie';
+import {validationRules} from  '../../utils/validation';
+import { Row } from 'react-bootstrap';
+import axios from 'axios';
+import { BASE_URL } from 'utils/requests';
+import { useReload, Reload } from '../../context/movieContext';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,13 +17,9 @@ import Grid from '@material-ui/core/Grid';
 import clsx from 'clsx';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {Movie, FormIStatus, FormIStatusProps} from '../../types/movie';
-import { Formik, Form, FormikProps } from 'formik';
-import {validationRules} from  '../../validations/validation';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import MoviesDataService from '../../services/movie.service';
-import { useReload, Reload } from '../../context/movieContext';
+import swal from 'sweetalert';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,64 +61,90 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const initialFValues: Movie = {
-    title: '',
-    description: '',
-    duration: 0 ,
-    genre:'',
-    image: []
-}
-
 const formStatusProps: FormIStatusProps  = {
     success: {
-        message: 'Created successfully.',
+        message: 'Addes successfully.',
         type: 'success',
     },
     error: {
         message: 'Something went wrong. Please try again.',
         type: 'error',
-    }
+    },
 }
 
-export default function AddNewMovie() {
-   
+
+
+
+
+function AddMovie(props : any){
+    const isAddMode = !props.props;
+
     const classes = useStyles({})
     const [displayFormStatus, setDisplayFormStatus] = useState(false)
-    const [open, setOpen] = React.useState(false);
     const [formStatus, setFormStatus] = useState<FormIStatus>({
         message: '',
         type: '',
     })
-
     const { reload, setReload } = useReload();
     const [image,setImage] = useState([])
-    React.useEffect(() => {
-        setDisplayFormStatus(false);
-    })
-    const createNewUser = async (data: Movie, resetForm: Function) => {
-        let form: any = new FormData();
+    let initialFValues: any = {}
+     if(isAddMode){
+        initialFValues = {
+            _id:'',
+            title: '',
+            description: '',
+            duration: '' ,
+            genre:'',
+            image: []
+        }
+     } else {
+         initialFValues = props.props
+         var id: any = props.props._id 
+     }
+     
+    const handleCancel = () => {
+        props.onChange()
+    }
+    function onSubmit(values: Movie, actions: any) {
+        if (isAddMode) {
+            createNewMovie(values, actions.resetForm);
+            actions.setSubmitting(false)
+        } else {
+            updateMovie(values, actions.resetForm);
+        }
+    }
+    const createNewMovie = async (data: Movie, resetForm: Function) => {
+        let formData: any = new FormData();  
         data.duration = parseInt(data.duration.toString());
-       //form.append("data",data)
-       form.append("file",image)
-       form.append("title",data.title)
-       form.append("description",data.description)
-       form.append("duration",data.duration)
-       form.append("genre",data.genre)
+       formData.append("file",image)
+       formData.append("title",data.title)
+       formData.append("description",data.description)
+       formData.append("duration",data.duration)
+       formData.append("genre",data.genre)
+
         try {
             if (data) {
-               
-                MoviesDataService.create(form)
+               console.log(data)
+                axios({
+                    method: "post",
+                    url: BASE_URL+'/movies',
+                    data: formData,
+                    headers: { "Content-Type": "multipart/form-data" },
+                  })
                 .then((response: any) => {
-                    setFormStatus(formStatusProps.success)
-                    resetForm({})
-                    setOpen(false)
-                    setReload(Reload.load)
+                    if(response.status === 201){
+                        swal("Movie Added!", "Movie is added to the list", "success");
+                        setReload(Reload.load)
+                        setFormStatus(formStatusProps.success)
+                        resetForm({})
+                        props.onChange()
+                }
                 })
             } else {
                 setFormStatus(formStatusProps.error)
+                swal("Movie Not Added!", "Try once more", "error");
             }
         } catch (error) {
-            const response = '';
             setFormStatus(formStatusProps.error)
 
         } finally {
@@ -121,36 +152,64 @@ export default function AddNewMovie() {
         }
     }
 
+    const updateMovie = async (data: Movie, resetForm: Function) => {
+        let formData: any = new FormData();  
+        data.duration = parseInt(data.duration.toString());
+        if(image !==null){
+            formData.append("file",image)
+        }
+       
+       formData.append("title",data.title)
+       formData.append("description",data.description)
+       formData.append("duration",data.duration)
+       formData.append("genre",data.genre)
+       formData.append("image",data.image)
+       console.log("Form data",formData)
+        try {
+            if (data) {
+               console.log(data)
+                axios({
+                    method: "put",
+                    url: BASE_URL+`/movies/${id}`,
+                    data: formData,
+                    headers: { "Content-Type": "multipart/form-data" },
+                  })
+                .then((response: any) => {
+                    if(response.status === 200){
+                        swal("Movie Updated!", "Movie details updated", "success");
 
-  
+                        setReload(Reload.load)
+                        setFormStatus(formStatusProps.success)
+                        resetForm({})
+                        props.onChange()
+                }
+                })
+            } else {
+                setFormStatus(formStatusProps.error)
+                swal("Movie Not Updated!", "Try once more", "error");
 
-  const handleClickOpen = () => {
-    setOpen(true);
-    setReload(Reload.reload)
-  };
+            }
+        } catch (error) {
+            setFormStatus(formStatusProps.error)
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+        } finally {
+            setDisplayFormStatus(true)
+        }
+    }
+
+    const handleClose = () => {
+        props.onChange()
+    };
 
   const handleImage = (e : any) => {
       setImage(e.target.files[0])  
   }
+    return(
+        <div>
 
-
-  return (
-    <div>
-            <Button variant="contained" color="secondary" onClick={handleClickOpen} style={{alignItems:'right'}}>
-                Add New Movie
-            </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogContent>
-        <Formik
+<Formik
                 initialValues={initialFValues}
-                onSubmit={(values: Movie, actions) => {
-                    createNewUser(values, actions.resetForm)
-                     actions.setSubmitting(false)
-                }}
+                onSubmit={onSubmit}
                 validationSchema={validationRules}
             >
                 {(props: FormikProps<Movie>) => {
@@ -164,7 +223,6 @@ export default function AddNewMovie() {
                     } = props
                     return (
                         <div>
-                              <h1 className={classes.center}>Add a new movie</h1>
                               <Form className={classes.root} noValidate autoComplete="off">
                                 <Grid container spacing={3}>
                                     <Grid> 
@@ -331,8 +389,8 @@ export default function AddNewMovie() {
                     )
                 }}
             </Formik>
-        </DialogContent>
-      </Dialog>
     </div>
-  );
+    );
 }
+
+export default AddMovie;
