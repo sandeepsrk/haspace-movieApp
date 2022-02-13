@@ -39,7 +39,7 @@ Open a browser tab, go to http://localhost:3000
 
 To access swagger api documentation , http://localhost:3001/api-docs
 
-### 1. In the local mmachine,
+### 1. In the local machine,
 
 1. Open the development.json file in haspace-movieApp/backend/src/configs and update the mongodb configurations
 2. cd haspace-movieApp/backend/
@@ -52,6 +52,11 @@ To access swagger api documentation , http://localhost:3001/api-docs
  Postman collection
  
   haspace-movieApp/backend/Movie App.postman_collection.json
+  
+  Swagger API documentation
+  
+  ![Screenshot from 2022-02-14 02-40-44](https://user-images.githubusercontent.com/49935554/153775200-dc707954-6079-401e-866d-a14bba3cd20c.png)
+
 
 
 
