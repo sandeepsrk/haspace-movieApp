@@ -34,7 +34,7 @@ services:
     build:
       context: ./frontend/
       dockerfile: Dockerfile
-    command: npm start
+    command: sh -c "npm run build && npm run start"
     volumes:
       - ./frontend/:/app/
     ports:

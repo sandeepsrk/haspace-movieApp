@@ -1,15 +1,10 @@
 FROM node:14.18.3 AS build
 
 
-WORKDIR /app
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-# install application dependencies
-COPY package.json ./
-COPY package-lock.json ./
-COPY tsconfig.json ./
-RUN npm install
-# add app
-COPY . ./
-# start app
-CMD ["npm", "start"]
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*","tsconfig.json", "./"]
+RUN npm install --silent
+COPY . .
+EXPOSE 3000
+VOLUME [ "/usr/src/app/node_modules" ]
+CMD ["npm", "run", "build"]
